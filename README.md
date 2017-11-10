@@ -1,5 +1,5 @@
 # go-import-path
-This is to be used if you have a custom domain you want to use as your base import path for your Go projects.
+This is to be used as the webserver if you have a custom domain you want to use as your base import path for your Go projects.
 
 # usage
 Figure out how you want to store the key/value pairs that serve as your router. For simplicity, this example just uses a map. The keys in the map correspond to the request uri (r.RequestURI) in the incoming request, and the vaue represents the target of where that repo should live.
