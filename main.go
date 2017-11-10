@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	baseDomain = "exameple.com"
+	baseDomain = "go.exameple.com"
 )
 
 var (
@@ -36,24 +36,26 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	parts := strings.Split(r.RequestURI, "/")
-	root := parts[1]
-	url, ok := router["/"+root]
+	repoRoot := "/" + parts[1]
+	url, ok := router[repoRoot]
 	if !ok {
 		http.Error(w, "import not found", http.StatusNotFound)
 		return
 	}
 
+	fullURL := url
 	if len(parts) > 2 {
 		for _, part := range parts[2:] {
-			url += "/" + part
+			fullURL += "/" + part
 		}
 	}
 
 	opts := struct {
-		RouterKey, RouterValue, BaseURL string
+		RouterKey, RouterValue, FullURL, BaseURL string
 	}{
-		RouterKey:   r.RequestURI,
+		RouterKey:   repoRoot,
 		RouterValue: url,
+		FullURL:     fullURL,
 		BaseURL:     baseDomain,
 	}
 
@@ -78,8 +80,8 @@ var html = `<!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="go-import" content="{{.BaseURL}}{{.RouterKey}} git {{.RouterValue}}">
-    <meta http-equiv="refresh" content="0; url={{.RouterValue}}">
+    <meta http-equiv="refresh" content="0; url={{.FullURL}}">
 </head>
 <body>
-    Nothing to see here; <a href="{{.RouterValue}}">move along</a>.
+    Nothing to see here; <a href="{{.FullURL}}">move along</a>.
 </body>`
