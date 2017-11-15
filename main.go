@@ -14,6 +14,8 @@ const (
 )
 
 var (
+	port = ":9090"
+
 	router = map[string]string{
 		"/package1": "https://github.com/jrkt/package1",
 		"/package2": "https://github.com/jrkt/package2",
@@ -24,8 +26,8 @@ var (
 func main() {
 	http.HandleFunc("/", handler)
 
-	fmt.Println("serving on port :9090")
-	if err := http.ListenAndServe(":9090", nil); err != nil {
+	fmt.Println("serving on port", port)
+	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
